@@ -18,16 +18,16 @@
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
-      <id>corp1</id>
-      <name>Corporate Repository</name>
-      <url>scp://repo/maven2</url>
+      <id>vytecapp-releases</id>
+      <name>vytecapp-releases</name>
+      <url>http://ec2-34-221-33-104.us-west-2.compute.amazonaws.com:8081/repository/vytecapp-releases/</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
-      <id>propSnap</id>
-      <name>Propellors Snapshots</name>
-      <url>sftp://propellers.net/maven</url>
+      <id>vytecapp-snapshots</id>
+      <name>vytecapp-snapshots</name>
+      <url>http://ec2-34-221-33-104.us-west-2.compute.amazonaws.com:8081/repository/vytecapp-snapshots/</url>
       <layout>legacy</layout>
     </snapshotRepository>
   </distributionManagement>

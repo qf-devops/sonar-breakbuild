@@ -20,14 +20,14 @@
       <uniqueVersion>false</uniqueVersion>
       <id>vytecapp-releases</id>
       <name>vytecapp-releases</name>
-      <url>http://ec2-34-221-33-104.us-west-2.compute.amazonaws.com:8081/repository/vytecapp-releases/</url>
+      <url>http://ip-172-31-9-77.us-west-2.compute.internal:8081/repository/vytecapp-releases/</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>vytecapp-snapshots</id>
       <name>vytecapp-snapshots</name>
-      <url>http://ec2-34-221-33-104.us-west-2.compute.amazonaws.com:8081/repository/vytecapp-snapshots/</url>
+      <url>http://ip-172-31-9-77.us-west-2.compute.internal:8081/repository/vytecapp-snapshots/</url>
       <layout>legacy</layout>
     </snapshotRepository>
   </distributionManagement>

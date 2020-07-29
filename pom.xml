@@ -7,6 +7,18 @@
   <version>1.0-SNAPSHOT</version>
   <name>vytec-app</name>
   <url>http://maven.apache.org</url>
+  
+    <repositories>
+    <repository>
+      <id>vytec-group</id>
+      <url>hhttp://35.165.244.218:8081/repository/vytec-group</url>
+    </repository>
+    <repository>
+      <id>maven-public</id>
+      <url>http://maven.apache.org</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

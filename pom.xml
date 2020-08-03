@@ -11,7 +11,7 @@
     <repositories>
     <repository>
       <id>vytec-group</id>
-      <url>http://35.165.244.218:8081/repository/vytec-group</url>
+      <url>http://ip-172-31-9-77.us-west-2.compute.internal:8081/repository/vytec-group</url>
     </repository>
     <repository>
       <id>maven-public</id>

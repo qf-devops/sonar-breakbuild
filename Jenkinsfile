@@ -27,11 +27,13 @@ node("maven-label") {
     stage('Build') {
         
         withEnv(["MVN_HOME=$mvnHome"]) {
+             withSonarQubeEnv('SonarQube') {
             if (isUnix()) {
                 sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -P vytecapp-deploy clean deploy'
             } else {
                 bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
             }
+             }
         }
     }
     stage('Results') {

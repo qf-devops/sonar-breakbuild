@@ -7,21 +7,37 @@ node("maven-label") {
         
         mvnHome = tool 'maven-3.6.3'
     }
-     stage('code-quality') {
-      withSonarQubeEnv('sonarqube-rec') {  
-        withEnv(["MVN_HOME=$mvnHome"]) {
-            
-                sh '"$MVN_HOME/bin/mvn" sonar:sonar'
-         } 
+     
+    stage("sonar"){
+      withSonarQubeEnv('sonarqube-rec') {
+              withEnv(["MVN_HOME=$mvnHome"]) {      
+               
+               sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+               def props = getProperties("target/sonar/report-task.txt")
+               env.SONAR_CE_TASK_URL = props.getProperty('ceTaskUrl')
+		      }
+          }   
+    } 
+    stage("sonar-qualitygate"){
+    withSonarQubeEnv('sonarqube-rec') {
+        def ceTask
+        timeout(time: 1, unit: 'MINUTES') {
+          waitUntil {
+            sh 'curl $SONAR_CE_TASK_URL -o ceTask.json'
+            ceTask = jsonParse(readFile('ceTask.json'))
+            echo ceTask.toString()
+            return "SUCCESS".equals(ceTask["task"]["status"])
+          }
         }
+        def qualityGateUrl = env.SONAR_HOST_URL + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"]
+        sh "curl $qualityGateUrl -o qualityGate.json"
+        def qualitygate = jsonParse(readFile('qualityGate.json'))
+        echo qualitygate.toString()
+        if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
+          error  "Quality Gate failure"
+        }
+        echo  "Quality Gate success"
     }
-    stage("SonarQube Quality Gate") { 
-        timeout(time: 2, unit: 'MINUTES') { 
-           def qg = waitForQualityGate() 
-           if (qg.status != 'OK') {
-             error "Pipeline aborted due to quality gate failure: ${qg.status}"
-           }
-        }
     }
     stage('Build') {
         

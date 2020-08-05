@@ -1,3 +1,4 @@
+//test
 node("maven-label") {
     def mvnHome
     stage('Preparation') { 

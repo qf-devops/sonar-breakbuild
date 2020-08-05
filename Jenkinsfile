@@ -7,13 +7,11 @@ node("maven-label") {
         mvnHome = tool 'maven-3.6.3'
     }
      stage('code-quality') {
-        
+      withSonarQubeEnv('sonarqube-rec') {  
         withEnv(["MVN_HOME=$mvnHome"]) {
-            if (isUnix()) {
-                sh '"$MVN_HOME/bin/mvn" sonar:sonar -Dsonar.host.url=http://ip-172-31-11-16.us-west-2.compute.internal:9000'
-            } else {
-                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-            }
+            
+                sh '"$MVN_HOME/bin/mvn" sonar:sonar
+         } 
         }
     }
     stage("SonarQube Quality Gate") { 

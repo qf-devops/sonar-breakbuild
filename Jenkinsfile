@@ -11,7 +11,7 @@ node("maven-label") {
       withSonarQubeEnv('sonarqube-rec') {  
         withEnv(["MVN_HOME=$mvnHome"]) {
             
-                sh '"$MVN_HOME/bin/mvn" sonar:sonar
+                sh '"$MVN_HOME/bin/mvn" sonar:sonar'
          } 
         }
     }

@@ -13,8 +13,7 @@ node("maven-label") {
               withEnv(["MVN_HOME=$mvnHome"]) {      
                
                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-               def props = getProperties("target/sonar/report-task.txt")
-               env.SONAR_CE_TASK_URL = props.getProperty('ceTaskUrl')
+            
 		      }
           }   
     } 

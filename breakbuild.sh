@@ -6,9 +6,9 @@
 # /api/ce/task?id=taskid
 # When the status is SUCCESS, the quality gate status can be checked at
 # /api/qualitygates/project_status?analysisId=analysisId
-set -o errexit
-set -o pipefail
-set -o nounset
+# set -o errexit
+# set -o pipefail
+# set -o nounset
 
 # in newer versions of sonar scanner the default report-task.txt location may be different
 # REPORT_PATH=".scannerwork/report-task.txt"

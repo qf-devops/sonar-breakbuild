@@ -18,7 +18,10 @@ node("maven-label") {
           }   
     } 
     stage("sonar-qualitygate"){
+	    withCredentials([string(credentialsId: 'sonar_token', variable: 'sonar_token')]) {
 	    sh 'sh breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000 "$sonar_token"'
+		    
+	    }
     }
     stage('Build') {
         withEnv(["MVN_HOME=$mvnHome"]) {       

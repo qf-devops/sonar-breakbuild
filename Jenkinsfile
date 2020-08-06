@@ -18,7 +18,7 @@ node("maven-label") {
           }   
     } 
     stage("sonar-qualitygate"){
-    sh './breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000/'
+    sh 'sh breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000/'
     }
     stage('Build') {
         

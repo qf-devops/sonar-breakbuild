@@ -21,15 +21,13 @@ node("maven-label") {
     sh 'sh breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000 6ef984b917cf56b6ad9d05d12790aa3f297607c4'
     }
     stage('Build') {
-        
-        withEnv(["MVN_HOME=$mvnHome"]) {
-             withSonarQubeEnv('SonarQube') {
+        withEnv(["MVN_HOME=$mvnHome"]) {       
             if (isUnix()) {
                 sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore -P vytecapp-deploy clean deploy'
             } else {
                 bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
             }
-             }
+          
         }
     }
     stage('Results') {

@@ -6,9 +6,7 @@
 # /api/ce/task?id=taskid
 # When the status is SUCCESS, the quality gate status can be checked at
 # /api/qualitygates/project_status?analysisId=analysisId
-# set -o errexit
-# set -o pipefail
-# set -o nounset
+
 
 # in newer versions of sonar scanner the default report-task.txt location may be different
 # REPORT_PATH=".scannerwork/report-task.txt"
@@ -16,10 +14,11 @@ REPORT_PATH="target/sonar/report-task.txt"
 CE_TASK_ID_KEY="ceTaskId="
 
 SONAR_INSTANCE="${1}"
+SONAR_ACCESS_TOKEN="${2}"
 SLEEP_TIME=5
 
 echo "QG Script --> Using SonarQube instance ${SONAR_INSTANCE}"
-echo "QG Script --> Using SonarQube access token"
+echo "QG Script --> Using SonarQube access token ${SONAR_ACCESS_TOKEN}"
 
 # get the compute engine task id
 ce_task_id=$(cat $REPORT_PATH | grep $CE_TASK_ID_KEY | cut -d'=' -f2)
@@ -37,7 +36,7 @@ wait_for_success=true
 
 while [ "${wait_for_success}" = "true" ]
 do
-  ce_status=$(curl -s "${SONAR_INSTANCE}"/api/ce/task?id=${ce_task_id} | jq -r .task.status)
+  ce_status=$(curl -s -u "${SONAR_ACCESS_TOKEN}": "${SONAR_INSTANCE}"/api/ce/task?id=${ce_task_id} | jq -r .task.status)
 
   echo "QG Script --> Status of SonarQube task is ${ce_status}"
 
@@ -59,11 +58,11 @@ do
 
 done
 
-ce_analysis_id=$(curl -s $SONAR_INSTANCE/api/ce/task?id=$ce_task_id | jq -r .task.analysisId)
+ce_analysis_id=$(curl -s -u $SONAR_ACCESS_TOKEN: $SONAR_INSTANCE/api/ce/task?id=$ce_task_id | jq -r .task.analysisId)
 echo "QG Script --> Using analysis id of ${ce_analysis_id}"
 
 # get the status of the quality gate for this analysisId
-qg_status=$(curl -s $SONAR_INSTANCE/api/qualitygates/project_status?analysisId="${ce_analysis_id}" | jq -r .projectStatus.status)
+qg_status=$(curl -s -u $SONAR_ACCESS_TOKEN: $SONAR_INSTANCE/api/qualitygates/project_status?analysisId="${ce_analysis_id}" | jq -r .projectStatus.status)
 echo "QG Script --> Quality Gate status is ${qg_status}"
 
 if [ "${qg_status}" != "OK" ]; then

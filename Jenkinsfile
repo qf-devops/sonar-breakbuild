@@ -18,7 +18,7 @@ node("maven-label") {
           }   
     } 
     stage("sonar-qualitygate"){
-    sh 'sh breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000 6ef984b917cf56b6ad9d05d12790aa3f297607c4'
+	    sh 'sh breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000 "${sonar_token}"'
     }
     stage('Build') {
         withEnv(["MVN_HOME=$mvnHome"]) {       

@@ -19,25 +19,7 @@ node("maven-label") {
           }   
     } 
     stage("sonar-qualitygate"){
-    withSonarQubeEnv('sonarqube-rec') {
-        def ceTask
-        timeout(time: 1, unit: 'MINUTES') {
-          waitUntil {
-            sh 'curl $SONAR_CE_TASK_URL -o ceTask.json'
-            ceTask = jsonParse(readFile('ceTask.json'))
-            echo ceTask.toString()
-            return "SUCCESS".equals(ceTask["task"]["status"])
-          }
-        }
-        def qualityGateUrl = env.SONAR_HOST_URL + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"]
-        sh "curl $qualityGateUrl -o qualityGate.json"
-        def qualitygate = jsonParse(readFile('qualityGate.json'))
-        echo qualitygate.toString()
-        if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
-          error  "Quality Gate failure"
-        }
-        echo  "Quality Gate success"
-    }
+    sh './breakbuild.sh http://ip-172-31-11-16.us-west-2.compute.internal:9000/'
     }
     stage('Build') {
         
